@@ -1,0 +1,10 @@
+[project]
+name = "devfactory-sandbox"
+version = "0.0.0"
+requires-python = ">=3.11"
+
+[tool.ruff]
+line-length = 100
+
+[tool.mypy]
+ignore_missing_imports = true
