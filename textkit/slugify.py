@@ -1,25 +1,33 @@
 """Slugify utility functions."""
 
 import re
+import unicodedata
 
 
-def slugify(text: str) -> str:
+def slugify(text: str, separator: str = "-") -> str:
     """Convert a string into a URL-safe slug.
 
     Args:
         text: The input string to convert
+        separator: The separator to use (default is "-")
 
     Returns:
-        A URL-safe slug with non-alphanumeric characters replaced by hyphens
+        A URL-safe slug with non-alphanumeric characters replaced by the separator
     """
     if not text:
         return ""
 
-    # Replace non-alphanumeric characters with hyphens
-    slug = re.sub(r"[^a-zA-Z0-9]+", "-", text)
+    # Normalize Unicode characters to decompose accented characters
+    normalized = unicodedata.normalize("NFKD", text)
 
-    # Remove leading and trailing hyphens
-    slug = slug.strip("-")
+    # Remove non-spacing marks (accents, etc.)
+    without_accents = "".join(c for c in normalized if not unicodedata.combining(c))
+
+    # Replace non-alphanumeric characters with the separator
+    slug = re.sub(r"[^a-zA-Z0-9]+", separator, without_accents)
+
+    # Remove leading and trailing separators
+    slug = slug.strip(separator)
 
     # Convert to lowercase
     slug = slug.lower()
