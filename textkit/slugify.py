@@ -25,3 +25,31 @@ def slugify(text: str) -> str:
     slug = slug.lower()
 
     return slug
+
+
+def truncate(text: str, max_len: int) -> str:
+    """Truncate a string at the last word boundary before max_len, adding an ellipsis.
+
+    Args:
+        text: The input string to truncate
+        max_len: The maximum length of the result (including ellipsis)
+
+    Returns:
+        The truncated string with an ellipsis if needed
+    """
+    if len(text) <= max_len:
+        return text
+
+    # If max_len is less than 3, we can't fit an ellipsis, so just truncate to max_len
+    if max_len < 3:
+        return text[:max_len]
+
+    # Find the last space within the allowed length (accounting for 3 characters of ellipsis)
+    last_space = text.rfind(" ", 0, max_len - 3)
+
+    # If no space is found, fallback to hard character cut
+    if last_space == -1:
+        return text[: max_len - 3] + "..."
+
+    # Return the text up to the last space, plus ellipsis
+    return text[:last_space] + "..."

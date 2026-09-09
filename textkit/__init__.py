@@ -1,5 +1,5 @@
 """Text utilities package."""
 
-from .slugify import slugify
+from .slugify import slugify, truncate
 
-__all__ = ["slugify"]
+__all__ = ["slugify", "truncate"]
